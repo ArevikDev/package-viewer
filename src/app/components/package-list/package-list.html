@@ -1,4 +1,4 @@
-<div class="list">
+<div class="list overflow-auto border border-gray-300 p-4">
   @for (p of packages$ | async; track p.id) {
     <div class="card mb-8">
       <div class="title">{{ p.id }}</div>

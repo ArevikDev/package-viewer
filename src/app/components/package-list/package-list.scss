@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  height: 100%;
+  padding: 40px;
+}
+
+.list {
+  width: 600px;
+  max-height: 600px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
