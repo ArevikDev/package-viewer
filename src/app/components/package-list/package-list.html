@@ -1,10 +1,12 @@
 <div class="list">
   @for (p of packages$ | async; track p.id) {
-    <div class="title">{{ p.id }}</div>
+    <div class="card mb-8">
+      <div class="title">{{ p.id }}</div>
 
-    <div class="body">
-      <div>Downloads: {{ p.weeklyDownloads }}</div>
-      <div>Dependencies: {{ p.dependencyCount }}</div>
+      <div class="body">
+        <div>Downloads: {{ p.weeklyDownloads }}</div>
+        <div>Dependencies: {{ p.dependencyCount }}</div>
+      </div>
     </div>
   }
 </div>
