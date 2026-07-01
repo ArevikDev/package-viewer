@@ -8,5 +8,4 @@ import { PackageList } from './components/package-list/package-list';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
-}
+export class App {}
