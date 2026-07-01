@@ -1,12 +1,5 @@
 <div class="list overflow-auto border border-gray-300 p-4">
-  @for (p of packages$ | async; track p.id) {
-    <div class="card mb-8">
-      <div class="title">{{ p.id }}</div>
-
-      <div class="body">
-        <div>Downloads: {{ p.weeklyDownloads }}</div>
-        <div>Dependencies: {{ p.dependencyCount }}</div>
-      </div>
-    </div>
+  @for (package of packages$ | async; track package.id) {
+    <app-package-card [package]="package" />
   }
 </div>
