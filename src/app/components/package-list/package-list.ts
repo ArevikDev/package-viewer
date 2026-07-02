@@ -25,15 +25,16 @@ import { PackageCard } from '../package-card/package-card';
   styleUrl: './package-list.scss',
 })
 export class PackageList {
-  private api = inject(PackageApiService);
+  private readonly api = inject(PackageApiService);
 
-  private refresh$ = new BehaviorSubject<void>(undefined);
-  loading$ = new BehaviorSubject<boolean>(false);
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  readonly loading$ = new BehaviorSubject<boolean>(false);
 
-  private filterText$ = new BehaviorSubject<string>('');
-  private hoveredId$ = new BehaviorSubject<string | null>(null);
+  private readonly filterText$ = new BehaviorSubject<string>('');
 
-  private packages$: Observable<Package[]> = this.refresh$.pipe(
+  private readonly hoveredId$ = new BehaviorSubject<string | null>(null);
+
+  private readonly packages$: Observable<Package[]> = this.refresh$.pipe(
     tap(() => {
       this.loading$.next(true);
       this.api.clearDependenciesCache();
@@ -46,7 +47,7 @@ export class PackageList {
     ),
   );
 
-  filteredPackages$: Observable<Package[]> = combineLatest([
+  readonly filteredPackages$: Observable<Package[]> = combineLatest([
     this.packages$,
     this.filterText$.pipe(map((v) => v.toLowerCase())),
   ]).pipe(
@@ -55,20 +56,22 @@ export class PackageList {
     ),
   );
 
-  highlights$: Observable<Map<string, 'self' | 'dependency'>> = this.hoveredId$.pipe(
+  readonly highlights$: Observable<Map<string, 'self' | 'dependency'>> = this.hoveredId$.pipe(
     debounceTime(100),
-    switchMap((hoveredId) =>
-      hoveredId
-        ? this.api.getDependencies(hoveredId).pipe(
-            map((deps) => {
-              const highlights = new Map<string, 'self' | 'dependency'>();
-              highlights.set(hoveredId, 'self');
-              deps.forEach((id) => highlights.set(id, 'dependency'));
-              return highlights;
-            }),
-          )
-        : of(new Map<string, 'self' | 'dependency'>()),
-    ),
+    switchMap((hoveredId) => {
+      if (!hoveredId) {
+        return of(new Map<string, 'self' | 'dependency'>());
+      }
+
+      return this.api.getDependencies(hoveredId).pipe(
+        map((deps) => {
+          const highlights = new Map<string, 'self' | 'dependency'>();
+          highlights.set(hoveredId, 'self');
+          deps.forEach((id) => highlights.set(id, 'dependency'));
+          return highlights;
+        }),
+      );
+    }),
   );
 
   onFilterChange(value: string): void {
