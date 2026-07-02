@@ -3,20 +3,20 @@
   (mouseenter)="packageHovered.emit(true)"
   (mouseleave)="packageHovered.emit(false)"
 >
-  <div class="title border-b border-gray-300 font-semibold truncate px-3 py-1 {{ highlightClass }}">
-    @if (idParts.scope) {
-      <span class="text-orange-600">{{ idParts.scope }}/</span>
+  <div class="title border-b border-gray-300 font-semibold truncate px-3 py-1 {{ highlightClass() }}">
+    @if (idParts().scope) {
+      <span class="text-orange-600">{{ idParts().scope }}/</span>
     }
-    {{ idParts.name }}
+    {{ idParts().name }}
   </div>
 
   <div class="body px-3 py-2">
     <div class="flex items-center gap-2 mb-2">
-      {{ package.weeklyDownloads | compactNumber }}
+      {{ package().weeklyDownloads | compactNumber }}
       <img src="icons/download.svg" class="h-4 w-4" />
     </div>
     <div class="text-gray-600">
-      {{ package.dependencyCount | compactNumber }} {{ dependencyLabel }}
+      {{ package().dependencyCount | compactNumber }} {{ dependencyLabel() }}
     </div>
   </div>
 </div>

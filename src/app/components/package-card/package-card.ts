@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  EventEmitter,
+  input,
+  Input,
+  output,
+  Output,
+} from '@angular/core';
 import { Package } from '../../models/package.model';
 import { CompactNumberPipe } from '../../pipes/compact-number.pipe';
 
@@ -10,26 +19,22 @@ import { CompactNumberPipe } from '../../pipes/compact-number.pipe';
   styleUrl: './package-card.scss',
 })
 export class PackageCard {
-  @Input() package!: Package;
-  @Input() highlight: 'self' | 'dependency' | null = null;
-  @Output() packageHovered = new EventEmitter<boolean>();
+  readonly package = input.required<Package>();
+  readonly highlight = input<'self' | 'dependency' | null>(null);
 
-  get idParts(): { scope: string | null; name: string } {
-    const i = this.package.id.indexOf('/');
-    return i === -1
-      ? { scope: null, name: this.package.id }
-      : { scope: this.package.id.slice(0, i), name: this.package.id.slice(i + 1) };
-  }
+  readonly packageHovered = output<boolean>();
 
-  get highlightClass(): string {
-    return this.highlight === 'self'
-      ? 'bg-blue-100'
-      : this.highlight === 'dependency'
-        ? 'bg-violet-100'
-        : '';
-  }
+  readonly idParts = computed(() => {
+    const [scope, name] = this.package().id.split('/');
+    return name ? { scope, name } : { scope: null, name: scope };
+  });
 
-  get dependencyLabel(): string {
-    return this.package.dependencyCount === 1 ? 'dependency' : 'dependencies';
-  }
+  readonly highlightClass = computed(() => {
+    const state = this.highlight();
+    return state === 'self' ? 'bg-blue-100' : state === 'dependency' ? 'bg-violet-100' : '';
+  });
+
+  readonly dependencyLabel = computed(() => {
+    return this.package().dependencyCount === 1 ? 'dependency' : 'dependencies';
+  });
 }
