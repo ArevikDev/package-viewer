@@ -1,5 +1,13 @@
-<div class="list overflow-auto border border-gray-300 p-4">
-  @for (package of packages$ | async; track package.id) {
+<div class="toolbar">
+  <input
+    (input)="onFilterChange($any($event.target).value)"
+    placeholder="Search..."
+    class="search-input border border-gray-300 px-3 py-2 rounded-lg gap-4"
+  />
+</div>
+
+<div class="list overflow-auto border border-gray-300 rounded-lg p-4 gap-4">
+  @for (package of filteredPackages$ | async; track package.id) {
     <app-package-card [package]="package" />
   }
 </div>
