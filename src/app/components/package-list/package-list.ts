@@ -2,14 +2,16 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
   debounceTime,
   exhaustMap,
+  finalize,
   map,
   Observable,
   of,
   switchMap,
-  tap
+  tap,
 } from 'rxjs';
 import { Package } from '../../models/package.model';
 import { PackageApiService } from '../../services/package-api.service';
@@ -32,8 +34,16 @@ export class PackageList {
   private hoveredId$ = new BehaviorSubject<string | null>(null);
 
   private packages$: Observable<Package[]> = this.refresh$.pipe(
-    tap(() => this.loading$.next(true)),
-    exhaustMap(() => this.api.getPackages().pipe(tap(() => this.loading$.next(false)))),
+    tap(() => {
+      this.loading$.next(true);
+      this.api.clearDependenciesCache();
+    }),
+    exhaustMap(() =>
+      this.api.getPackages().pipe(
+        catchError(() => of([])),
+        finalize(() => this.loading$.next(false)),
+      ),
+    ),
   );
 
   filteredPackages$: Observable<Package[]> = combineLatest([

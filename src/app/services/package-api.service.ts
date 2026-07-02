@@ -23,4 +23,8 @@ export class PackageApiService {
     }
     return cached;
   }
+
+  clearDependenciesCache(): void {
+    this.dependenciesCache.clear();
+  }
 }
