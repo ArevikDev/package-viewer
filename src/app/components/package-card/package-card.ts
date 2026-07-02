@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Package } from '../../models/package.model';
+import { CompactNumberPipe } from '../../pipes/compact-number.pipe';
 
 @Component({
   selector: 'app-package-card',
-  imports: [],
+  imports: [CompactNumberPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './package-card.html',
   styleUrl: './package-card.scss',

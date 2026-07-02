@@ -11,7 +11,7 @@
   </div>
 
   <div class="body px-3 py-2">
-    <div>Downloads: {{ package.weeklyDownloads }}</div>
+    <div>Downloads: {{ package.weeklyDownloads | compactNumber }}</div>
     <div>Dependencies: {{ package.dependencyCount }}</div>
   </div>
 </div>
