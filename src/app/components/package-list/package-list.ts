@@ -1,19 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { PackageApiService } from '../../services/package-api.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
   debounceTime,
-  delay,
   exhaustMap,
   map,
   Observable,
   of,
   switchMap,
-  tap,
+  tap
 } from 'rxjs';
 import { Package } from '../../models/package.model';
+import { PackageApiService } from '../../services/package-api.service';
 import { PackageCard } from '../package-card/package-card';
 
 @Component({
