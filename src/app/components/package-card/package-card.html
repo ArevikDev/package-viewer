@@ -1,8 +1,13 @@
-    <div class="card">
-      <div class="title">{{ package.id }}</div>
+<div class="border border-gray-300 rounded-lg overflow-hidden">
+  <div class="title border-b border-gray-300 font-semibold truncate px-3 py-1">
+    @if (idParts.scope) {
+      <span class="text-orange-600">{{ idParts.scope }}/</span>
+    }
+    {{ idParts.name }}
+  </div>
 
-      <div class="body">
-        <div>Downloads: {{ package.weeklyDownloads }}</div>
-        <div>Dependencies: {{ package.dependencyCount }}</div>
-      </div>
-    </div>
+  <div class="body px-3 py-2">
+    <div>Downloads: {{ package.weeklyDownloads }}</div>
+    <div>Dependencies: {{ package.dependencyCount }}</div>
+  </div>
+</div>
