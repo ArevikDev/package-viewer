@@ -34,15 +34,7 @@ export class PackageList {
 
   private readonly filterText$ = new BehaviorSubject<string>('');
 
-  private readonly scroll$ = new Subject<void>();
   private readonly hoveredId$ = new BehaviorSubject<string | null>(null);
-
-  @HostListener('scroll', ['$event'])
-  onScroll(event: Event): void {
-    if ((event.target as HTMLElement).classList.contains('list')) {
-      this.scroll$.next();
-    }
-  }
 
   private readonly packages$: Observable<Package[]> = this.refresh$.pipe(
     tap(() => {

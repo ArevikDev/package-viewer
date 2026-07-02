@@ -2,8 +2,3 @@
   display: block;
   min-width: 0;
 }
-
-:host-context(.list:active),
-:host-context(.list:focus-within) {
-  pointer-events: none;
-}

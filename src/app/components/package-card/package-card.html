@@ -3,7 +3,9 @@
   (mouseenter)="packageHovered.emit(true)"
   (mouseleave)="packageHovered.emit(false)"
 >
-  <div class="title border-b border-gray-300 font-semibold truncate px-3 py-1 {{ highlightClass() }}">
+  <div
+    class="title border-b border-gray-300 font-semibold truncate px-3 py-1 {{ highlightClass() }}"
+  >
     @if (idParts().scope) {
       <span class="text-orange-600">{{ idParts().scope }}/</span>
     }
