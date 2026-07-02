@@ -9,5 +9,7 @@
 <div class="list overflow-auto border border-gray-300 rounded-lg p-4 gap-4">
   @for (package of filteredPackages$ | async; track package.id) {
     <app-package-card [package]="package" />
+  }  @empty {
+    <p class="text-gray-700">No packages found.</p>
   }
 </div>
