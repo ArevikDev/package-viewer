@@ -1,7 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { PackageApiService } from '../../services/package-api.service';
-import { BehaviorSubject, combineLatest, debounceTime, map, Observable, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  delay,
+  exhaustMap,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Package } from '../../models/package.model';
 import { PackageCard } from '../package-card/package-card';
 
@@ -14,9 +25,17 @@ import { PackageCard } from '../package-card/package-card';
 })
 export class PackageList {
   private api = inject(PackageApiService);
-  private packages$: Observable<Package[]> = this.api.getPackages();
+
+  private refresh$ = new BehaviorSubject<void>(undefined);
+  loading$ = new BehaviorSubject<boolean>(false);
+
   private filterText$ = new BehaviorSubject<string>('');
   private hoveredId$ = new BehaviorSubject<string | null>(null);
+
+  private packages$: Observable<Package[]> = this.refresh$.pipe(
+    tap(() => this.loading$.next(true)),
+    exhaustMap(() => this.api.getPackages().pipe(tap(() => this.loading$.next(false)))),
+  );
 
   filteredPackages$: Observable<Package[]> = combineLatest([
     this.packages$,
@@ -49,5 +68,9 @@ export class PackageList {
 
   onCardHover(id: string | null): void {
     this.hoveredId$.next(id);
+  }
+
+  onRefresh(): void {
+    this.refresh$.next();
   }
 }
