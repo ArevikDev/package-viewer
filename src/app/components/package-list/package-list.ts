@@ -17,9 +17,9 @@ export class PackageList {
   private packages$: Observable<Package[]> = this.api.getPackages();
   private filterText$ = new BehaviorSubject<string>('');
 
-  filteredPackages$: Observable<Package[]> = combineLatest([this.packages$, this.filterText$]).pipe(
+  filteredPackages$: Observable<Package[]> = combineLatest([this.packages$, this.filterText$.pipe(map((v) => v.toLowerCase()))]).pipe(
     map(([packages, filterText]: [Package[], string]) =>
-      packages.filter((p: Package) => p.id.toLowerCase().includes(filterText.toLowerCase())),
+      packages.filter((p: Package) => p.id.toLowerCase().includes(filterText)),
     ),
   );
 
