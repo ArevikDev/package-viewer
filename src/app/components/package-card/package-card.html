@@ -11,7 +11,12 @@
   </div>
 
   <div class="body px-3 py-2">
-    <div>Downloads: {{ package.weeklyDownloads | compactNumber }}</div>
-    <div>Dependencies: {{ package.dependencyCount }}</div>
+    <div class="flex items-center gap-2 mb-2">
+      {{ package.weeklyDownloads | compactNumber }}
+      <img src="icons/download.svg" class="h-4 w-4" />
+    </div>
+    <div class="text-gray-600">
+      {{ package.dependencyCount | compactNumber }} {{ dependencyLabel }}
+    </div>
   </div>
 </div>

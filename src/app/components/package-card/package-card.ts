@@ -28,4 +28,8 @@ export class PackageCard {
         ? 'bg-violet-100'
         : '';
   }
+
+  get dependencyLabel(): string {
+    return this.package.dependencyCount === 1 ? 'dependency' : 'dependencies';
+  }
 }
