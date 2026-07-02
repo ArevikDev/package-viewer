@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 import {
+  auditTime,
   BehaviorSubject,
   catchError,
   combineLatest,
@@ -10,6 +11,7 @@ import {
   map,
   Observable,
   of,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs';
@@ -32,7 +34,15 @@ export class PackageList {
 
   private readonly filterText$ = new BehaviorSubject<string>('');
 
+  private readonly scroll$ = new Subject<void>();
   private readonly hoveredId$ = new BehaviorSubject<string | null>(null);
+
+  @HostListener('scroll', ['$event'])
+  onScroll(event: Event): void {
+    if ((event.target as HTMLElement).classList.contains('list')) {
+      this.scroll$.next();
+    }
+  }
 
   private readonly packages$: Observable<Package[]> = this.refresh$.pipe(
     tap(() => {
